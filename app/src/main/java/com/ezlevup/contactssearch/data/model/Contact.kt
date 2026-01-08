@@ -9,8 +9,9 @@ package com.ezlevup.contactssearch.data.model
  * @property photoUri 프로필 사진 URI (nullable)
  */
 data class Contact(
-    val id: Long,
-    val name: String,
-    val phoneNumber: String,
-    val photoUri: String? = null
+        val id: Long,
+        val name: String,
+        val phoneNumber: String,
+        val photoUri: String? = null,
+        val isFavorite: Boolean = false
 )

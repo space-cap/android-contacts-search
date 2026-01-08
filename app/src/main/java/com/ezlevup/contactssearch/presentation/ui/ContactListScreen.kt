@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ezlevup.contactssearch.presentation.ui.components.ContactItem
 import com.ezlevup.contactssearch.presentation.ui.components.SearchBar
 import com.ezlevup.contactssearch.presentation.viewmodel.ContactViewModel
+import com.ezlevup.contactssearch.presentation.viewmodel.ContactViewModelFactory
 
 /**
  * 연락처 리스트 메인 화면
@@ -35,7 +36,7 @@ import com.ezlevup.contactssearch.presentation.viewmodel.ContactViewModel
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContactListScreen(viewModel: ContactViewModel = viewModel()) {
+fun ContactListScreen(viewModel: ContactViewModel = viewModel(factory = ContactViewModelFactory)) {
     val context = LocalContext.current
     val filteredContacts by viewModel.filteredContacts.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
@@ -100,9 +101,53 @@ fun ContactListScreen(viewModel: ContactViewModel = viewModel()) {
                 }
             } else {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    // 검색어 없을 때만 즐겨찾기 섹션 표시
+                    if (searchQuery.isEmpty()) {
+                        val favorites = filteredContacts.filter { it.isFavorite }
+                        if (favorites.isNotEmpty()) {
+                            item {
+                                Text(
+                                        text = "즐겨찾기",
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        modifier =
+                                                Modifier.padding(
+                                                        horizontal = 16.dp,
+                                                        vertical = 8.dp
+                                                )
+                                )
+                            }
+                            items(items = favorites, key = { "fav_${it.id}" }) { contact ->
+                                ContactItem(
+                                        contact = contact,
+                                        onFavoriteToggle = { viewModel.toggleFavorite(contact.id) },
+                                        onClick = { /* TODO */}
+                                )
+                                HorizontalDivider(
+                                        modifier = Modifier.padding(horizontal = 16.dp),
+                                        thickness = 0.5.dp
+                                )
+                            }
+                            item {
+                                Text(
+                                        text = "모든 연락처",
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        modifier =
+                                                Modifier.padding(
+                                                        horizontal = 16.dp,
+                                                        vertical = 8.dp
+                                                )
+                                )
+                            }
+                        }
+                    }
+
+                    // 전체 연락처 또는 검색 결과 표시
                     items(items = filteredContacts, key = { it.id }) { contact ->
                         ContactItem(
                                 contact = contact,
+                                onFavoriteToggle = { viewModel.toggleFavorite(contact.id) },
                                 onClick = {
                                     // TODO: 연락처 클릭 시 동작 (전화 걸기 등)
                                 }

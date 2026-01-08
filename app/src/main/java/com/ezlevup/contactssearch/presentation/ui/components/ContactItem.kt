@@ -10,7 +10,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,39 +29,62 @@ import com.ezlevup.contactssearch.data.model.Contact
  *
  * @param contact 연락처 정보
  * @param onClick 클릭 이벤트 콜백
+ * @param onFavoriteToggle 즐겨찾기 토글 콜백
  * @param modifier Modifier
  */
 @Composable
-fun ContactItem(contact: Contact, onClick: () -> Unit = {}, modifier: Modifier = Modifier) {
-    Row(
-            modifier =
-                    modifier.fillMaxWidth()
-                            .clickable(onClick = onClick)
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-    ) {
-        // 프로필 아이콘 (실제 앱에서는 photoUri를 사용하여 이미지 표시 가능)
-        Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "프로필",
-                modifier = Modifier.size(48.dp),
-                tint = MaterialTheme.colorScheme.primary
-        )
+fun ContactItem(
+        contact: Contact,
+        onClick: () -> Unit = {},
+        onFavoriteToggle: () -> Unit = {},
+        modifier: Modifier = Modifier
+) {
+        Row(
+                modifier =
+                        modifier.fillMaxWidth()
+                                .clickable(onClick = onClick)
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+        ) {
+                // 프로필 아이콘
+                Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "프로필",
+                        modifier = Modifier.size(40.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                )
 
-        Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(16.dp))
 
-        // 이름과 전화번호
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                    text = contact.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium
-            )
-            Text(
-                    text = contact.phoneNumber,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                // 이름과 전화번호
+                Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                                text = contact.name,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Medium
+                        )
+                        Text(
+                                text = contact.phoneNumber,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                }
+
+                // 즐겨찾기 버튼
+                IconButton(onClick = onFavoriteToggle) {
+                        Icon(
+                                imageVector =
+                                        if (contact.isFavorite) Icons.Default.Star
+                                        else Icons.Outlined.Person,
+                                contentDescription =
+                                        if (contact.isFavorite) "즐겨찾기 해제" else "즐겨찾기 추가",
+                                tint =
+                                        if (contact.isFavorite) {
+                                                MaterialTheme.colorScheme.primary
+                                        } else {
+                                                MaterialTheme.colorScheme.outline
+                                        }
+                        )
+                }
         }
-    }
 }
