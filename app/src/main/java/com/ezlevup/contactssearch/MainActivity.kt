@@ -6,9 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.ezlevup.contactssearch.presentation.ui.ContactListScreen
-import com.ezlevup.contactssearch.presentation.ui.permission.PermissionScreen
+import com.ezlevup.contactssearch.presentation.ui.PermissionScreen
 import com.ezlevup.contactssearch.ui.theme.ContactsSearchTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
 class MainActivity : ComponentActivity() {

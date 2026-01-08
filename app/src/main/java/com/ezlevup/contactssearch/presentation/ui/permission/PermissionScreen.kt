@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Contacts
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,7 +49,7 @@ fun PermissionScreen(permissionState: PermissionState, onPermissionGranted: () -
             verticalArrangement = Arrangement.Center
     ) {
         Icon(
-                imageVector = Icons.Default.Contacts,
+                imageVector = Icons.Default.Face,
                 contentDescription = "연락처",
                 modifier = Modifier.padding(16.dp),
                 tint = MaterialTheme.colorScheme.primary
